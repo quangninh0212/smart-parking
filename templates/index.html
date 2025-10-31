@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Parking Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: #eee;
+            text-align: center;
+        }
+        h1 { margin-top: 10px; }
+        .cams {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        img {
+            width: 480px;
+            height: 320px;
+            border-radius: 10px;
+            border: 2px solid #444;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 85%;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: center;
+        }
+        th { background: #333; }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .btn.open {
+            background: linear-gradient(135deg, #00c853, #009624);
+        }
+        .btn.close {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .btn.led {
+            background: linear-gradient(135deg, #ffeb3b, #ffc107);
+            color: #222;
+            font-weight: bold;
+        }
+        .btn.led:hover {
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.7);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>🚗 Smart Parking Dashboard</h1>
+
+    <div class="cams">
+        <div>
+            <h3>Camera IN</h3>
+            <img id="cam_in" src="{{ url_for('static', filename='cam_in.jpg') }}">
+        </div>
+        <div>
+            <h3>Camera OUT</h3>
+            <img id="cam_out" src="{{ url_for('static', filename='cam_out.jpg') }}">
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn led" onclick="toggleLED()">💡 Đổi màu đèn RGB</button>
+    </div>
+
+    <script>
+    async function toggleLED() {
+        await fetch('/led/toggle', { method: 'POST' });
+    }
+    </script>
+
+    <div class="controls">
+        <button class="btn open in" onclick="controlGate('in','open')">🚪 Mở Barrier IN</button>
+        <button class="btn close in" onclick="controlGate('in','close')">❌ Đóng Barrier IN</button>
+        <button class="btn open out" onclick="controlGate('out','open')">🚪 Mở Barrier OUT</button>
+        <button class="btn close out" onclick="controlGate('out','close')">❌ Đóng Barrier OUT</button>
+    </div>
+
+
+    <script>
+    async function controlGate(direction, action) {
+        const res = await fetch(`/gate/${direction}/${action}`, {method: 'POST'});
+        const data = await res.json();
+    }
+    </script>
+
+
+    <h3>📋 Log xe gần đây</h3>
+    <table id="logTable">
+        <thead>
+            <tr>
+                <th>Thời gian</th>
+                <th>UID</th>
+                <th>Tên</th>
+                <th>Biển số</th>
+                <th>Hướng</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Tự động refresh ảnh mỗi 1 giây để hiển thị camera mới nhất
+        function refreshCameras() {
+            const camIn = document.getElementById('cam_in');
+            const camOut = document.getElementById('cam_out');
+            const timestamp = new Date().getTime();
+            camIn.src = `/static/cam_in.jpg?t=${timestamp}`;
+            camOut.src = `/static/cam_out.jpg?t=${timestamp}`;
+        }
+
+        async function loadLogs() {
+            const res = await fetch('/logs');
+            const data = await res.json();
+            const tbody = document.querySelector("#logTable tbody");
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        setInterval(refreshCameras, 1000);
+        setInterval(loadLogs, 2000);
+        refreshCameras();
+        loadLogs();
+    </script>
+</body>
+</html>
