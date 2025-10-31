@@ -78,35 +78,6 @@ REG:UID,Plate
 
 ---
 
-## 🧩 Sơ đồ hoạt động
-
-```mermaid
-flowchart LR
-  subgraph Entry[Arduino VÀO]
-      A1(RFID Reader) --> A2{Thẻ hợp lệ?}
-      A2 -->|Yes| A3[Camera IN -> OCR biển số]
-      A3 --> A4[Python xử lý & ghi DB]
-  end
-
-  subgraph Exit[Arduino RA]
-      B1(RFID Reader) --> B2{Thẻ hợp lệ?}
-      B2 -->|Yes| B3[Camera OUT -> OCR biển số]
-      B3 --> B4[Python xác nhận -> Mở Barie]
-      B4 --> B5[Reset biển số guest]
-  end
-
-  subgraph Flask[Web Dashboard]
-      F1[Camera IN/OUT Stream]
-      F2[Log Viewer]
-      F3[Control Buttons]
-      F3 -->|POST /gate/in/open| Entry
-      F3 -->|POST /gate/out/open| Exit
-      F3 -->|POST /led/toggle| Exit
-  end
-````
-
----
-
 ## 💾 Cấu trúc thư mục
 
 ```
@@ -231,9 +202,4 @@ Xem camera, log xe, và điều khiển barie/LED.
 Dự án phát hành theo giấy phép **MIT License**.
 Bạn có thể tự do sử dụng, chỉnh sửa, và phân phối với mục đích học tập và nghiên cứu.
 
-```
-
----
-
-Anh muốn mình tạo thêm **README dạng song ngữ (Việt - Anh)** cho repo không? (giúp thầy/công ty đánh giá dễ hơn khi xem GitHub).
 ```
