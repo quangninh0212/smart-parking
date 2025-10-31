@@ -1,3 +1,6 @@
+---
+
+```markdown
 # 🚗 Smart Parking System — RFID + AI License Plate Recognition + Flask Dashboard
 
 Hệ thống bãi đỗ xe thông minh kết hợp **Arduino**, **AI OCR (EasyOCR)**, **Camera kép (IN/OUT)** và **Web Dashboard (Flask)** để quản lý xe ra vào tự động bằng **thẻ RFID** và **nhận diện biển số**.
@@ -79,7 +82,7 @@ REG:UID,Plate
 
 ## 🧩 Sơ đồ hoạt động
 
-``mermaid
+```mermaid
 flowchart LR
   subgraph Entry[Arduino VÀO]
       A1(RFID Reader) --> A2{Thẻ hợp lệ?}
@@ -102,7 +105,7 @@ flowchart LR
       F3 -->|POST /gate/out/open| Exit
       F3 -->|POST /led/toggle| Exit
   end
-```
+````
 
 ---
 
@@ -123,7 +126,7 @@ flowchart LR
 └── static/
     ├── cam_in.jpg        # Frame camera IN (auto cập nhật)
     └── cam_out.jpg       # Frame camera OUT
-``
+```
 
 ---
 
@@ -229,3 +232,10 @@ Xem camera, log xe, và điều khiển barie/LED.
 
 Dự án phát hành theo giấy phép **MIT License**.
 Bạn có thể tự do sử dụng, chỉnh sửa, và phân phối với mục đích học tập và nghiên cứu.
+
+```
+
+---
+
+Anh muốn mình tạo thêm **README dạng song ngữ (Việt - Anh)** cho repo không? (giúp thầy/công ty đánh giá dễ hơn khi xem GitHub).
+```
