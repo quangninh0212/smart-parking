@@ -1,6 +1,4 @@
----
 
-```markdown
 # 🚗 Smart Parking System — RFID + AI License Plate Recognition + Flask Dashboard
 
 Hệ thống bãi đỗ xe thông minh kết hợp **Arduino**, **AI OCR (EasyOCR)**, **Camera kép (IN/OUT)** và **Web Dashboard (Flask)** để quản lý xe ra vào tự động bằng **thẻ RFID** và **nhận diện biển số**.
